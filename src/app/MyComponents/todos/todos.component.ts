@@ -7,26 +7,37 @@ import { Todo } from 'src/app/Todo';
   styleUrls: ['./todos.component.css']
 })
 export class TodosComponent {
-
+  localItem : string | any;
   todos : Todo[];
   constructor(){
-    this.todos = [
-      {
-        srlNo : 1,
-        title : "Cleaning",
-        description : "Clean the cupboard",
-        active : true
+   this.localItem = localStorage.getItem("todos");
+    if(this.localItem==null)
+      this.todos = [];
+    else{
+      this.todos=JSON.parse(this.localItem);
+    }
+    
 
-      },
-      {
-        srlNo : 2,
-        title : "Workout",
-        description : "Treadmill and strength training",
-        active : true
+  }
 
-      }
-    ];
+  //this is the output of the emitter we started in todo-item.component.ts
 
+  todoDelete(todo : Todo){
+    console.log(todo);
+    this.todos.splice(this.todos.indexOf(todo), 1);//index and how many to delete
+    localStorage.setItem("todos",JSON.stringify(this.todos));
+  }
+
+  todoAdd(todo : Todo){
+    console.log(todo);
+    this.todos.push(todo);
+    localStorage.setItem("todos",JSON.stringify(this.todos));
+  }
+  todoToggle(todo : Todo){
+    console.log(todo);
+   const index = this.todos.indexOf(todo);
+   this.todos[index].active=!this.todos[index].active;
+    localStorage.setItem("todos",JSON.stringify(this.todos));
   }
 
 }
